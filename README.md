@@ -161,5 +161,5 @@ private static final String PASSWORD = "root";
 
 | Phân quyền | Tên đăng nhập (`username`) | Mật khẩu | Chức năng truy cập |
 | :--- | :--- | :--- | :--- |
-| **Quản lý (Manager)** | `manager` | `123456` | Toàn quyền truy cập phân hệ **Báo cáo & Thống kê Doanh thu (Module 2)** |
+| **Quản lý (Manager)** | `manager01` | `admin123` | Toàn quyền truy cập phân hệ **Báo cáo & Thống kê Doanh thu (Module 2)** |
 | **Khách hàng (Customer)** | `an.nguyen` | `123456` | Trải nghiệm luồng **Đăng ký Thành viên (Module 1)** |
