@@ -1,178 +1,165 @@
-# 🏪 QLST – Hệ thống Quản lý Siêu Thị
+# 🏪 QLST – Hệ Thống Quản Lý Siêu Thị
 
-**MSSV:** 10B23DCCN646 | **Môn:** Phân Tích Thiết Kế Hệ Thống  
-**Công nghệ:** Java EE (Servlet + JSP) · JDBC · MySQL · Apache Tomcat
-
----
-
-## 📋 Mô tả Dự án
-
-Hệ thống QLST gồm **2 module chính**:
-
-| Module | Tính năng | URL |
-|--------|-----------|-----|
-| **Module 1** | Đăng ký Thành viên | `/dangky` |
-| **Module 2** | Thống kê Doanh thu theo Mặt hàng | `/thongke` |
+* **Nền tảng công nghệ:** Java-JSP-JDBC-Apache Tomcat 9-MySQL 8.0-Maven 3.x
 
 ---
 
-## 🗂️ Cấu trúc Thư mục
+## 📋 Giới Thiệu & Các Phân Hệ Chính
+
+Hệ thống được thiết kế và hiện thực hóa dựa trên tài liệu **Phân tích Thiết kế Hệ thống**, tập trung vào 2 phân hệ cốt lõi:
+
+| Phân hệ (Module) | Chức năng chi tiết | URL Điều hướng | Tầng Xử lý (DAO / Model) |
+| :--- | :--- | :--- | :--- |
+| **Module 1** | **Đăng ký Khách hàng Thành viên**<br>- Kiểm tra trùng lặp (username, email, SĐT)<br>- Tự động lưu thông tin khách hàng vào CSDL | `/register.jsp`<br>`/login.jsp` | `MemberDAO6`<br>`Customer6`, `Member6` |
+| **Module 2** | **Báo cáo Thống kê Doanh thu Mặt hàng**<br>- Chọn loại báo cáo thống kê<br>- Chọn khoảng thời gian (từ ngày → đến ngày)<br>- Tổng hợp doanh thu bán tại quầy & online<br>- Sắp xếp doanh thu cao nhất (`DESC`)<br>- Xem chi tiết lịch sử các hóa đơn từng mặt hàng | `/manager_home.jsp`<br>`/statis_type.jsp`<br>`/date_range.jsp`<br>`/product_revenue_list.jsp`<br>`/transaction_detail.jsp` | `ProductStatisticsDAO6`<br>`InStoreSalesInvoiceDAO6`<br>`OnlineInvoiceDAO6`<br>`ProductRevenueStatistics6`<br>`TransactionDetail6` |
+
+---
+
+## 🔗 Luồng Điều Hướng Giao Diện (Page Flow)
+
+```
+HomePage.jsp (Trang chủ)
+  │
+  ├──► [Khách hàng] ──► register.jsp (Đăng ký TV) ──► login.jsp (Đăng nhập)
+  │
+  └──► [Quản lý] ──► login.jsp (Đăng nhập Quản lý)
+                           │
+                           ▼
+                     manager_home.jsp (Trang chủ Quản lý)
+                           │
+                           ▼
+                     statis_type.jsp (Chọn loại báo cáo: Mặt hàng)
+                           │
+                           ▼
+                     date_range.jsp (Chọn khoảng ngày: Từ ngày → Đến ngày)
+                           │
+                           ▼
+                     product_revenue_list.jsp (Bảng thống kê doanh thu mặt hàng)
+                           │
+                           ▼
+                     transaction_detail.jsp (Chi tiết các hóa đơn của mặt hàng)
+```
+
+---
+
+## 🗂️ Cấu Trúc Thư Mục Mã Nguồn Chuẩn Xác
 
 ```
 QLST/
-├── pom.xml                              ← Maven build file
+├── pom.xml                                  ← Cấu hình Maven Build (Java 11, Tomcat 9, MySQL Driver)
 ├── sql/
-│   └── qlst_database.sql               ← Script tạo CSDL + dữ liệu mẫu
+│   ├── qlst_database.sql                    ← CSDL gốc của hệ thống siêu thị
+│   ├── final_dien_may_full.sql              ← Kịch bản CSDL hoàn chỉnh dữ liệu mẫu
+│   └── update_dien_may.sql                  ← Script cập nhật dữ liệu danh mục Điện máy
+├── tomcat/                                  ← Apache Tomcat 9 tích hợp sẵn trong dự án (Port 8080)
+├── KHOI_DONG_TOMCAT.bat                     ← Script khởi động ứng dụng 1-click (Windows)
 └── src/main/
     ├── java/com/qlst/
+    │   ├── TomcatLauncher.java              ← Bộ kích hoạt máy chủ Tomcat & tự động mở trình duyệt
     │   ├── dao/
-    │   │   ├── DBConnection.java        ← Kết nối JDBC
-    │   │   ├── ThanhVienDAO.java        ← DAO Module 1
-    │   │   └── ThongKeDAO.java          ← DAO Module 2
-    │   ├── model/
-    │   │   ├── ThanhVien.java           ← Entity thành viên
-    │   │   └── ThongKeDoanhThu.java     ← Model thống kê
-    │   └── web/
-    │       ├── DangKyServlet.java       ← Controller Module 1
-    │       └── ThongKeServlet.java      ← Controller Module 2
+    │   │   ├── DAO.java                     ← Lớp DAO cơ sở
+    │   │   ├── DBConnection.java            ← Quản lý kết nối JDBC MySQL (qlst_db)
+    │   │   ├── MemberDAO6.java              ← Xử lý nghiệp vụ đăng nhập & đăng ký thành viên
+    │   │   ├── ProductStatisticsDAO6.java   ← Truy vấn tổng hợp doanh thu theo khoảng ngày
+    │   │   ├── InStoreSalesInvoiceDAO6.java ← Truy vấn hóa đơn bán lẻ tại quầy
+    │   │   └── OnlineInvoiceDAO6.java       ← Truy vấn hóa đơn đơn hàng online
+    │   └── model/
+    │       ├── Member6.java                 ← Thực thể Thành viên chung
+    │       ├── Customer6.java               ← Kế thừa Member6 (Khách hàng)
+    │       ├── Employee6.java               ← Kế thừa Member6 (Nhân viên)
+    │       ├── Manager6.java                ← Kế thừa Employee6 (Quản lý)
+    │       ├── SalesStaff6.java             ← Nhân viên thu ngân / bán hàng
+    │       ├── WarehouseStaff6.java         ← Nhân viên thủ kho
+    │       ├── Product6.java                ← Mặt hàng kinh doanh
+    │       ├── ProductRevenueStatistics6.java← Dữ liệu hiển thị bảng thống kê doanh thu
+    │       ├── TransactionDetail6.java      ← Chi tiết từng hóa đơn bán hàng
+    │       ├── InStoreSalesInvoice6.java    ← Hóa đơn bán lẻ tại quầy
+    │       ├── InStoreSalesInvoiceDetail6.java ← Chi tiết hóa đơn tại quầy
+    │       ├── OnlineOrder6.java            ← Đơn đặt hàng trực tuyến
+    │       ├── OnlineOrderDetail6.java      ← Chi tiết đơn hàng trực tuyến
+    │       ├── OnlineInvoice6.java          ← Hóa đơn thanh toán online
+    │       ├── GoodsReceiptNote6.java       ← Phiếu nhập kho
+    │       ├── GoodsReceiptDetail6.java     ← Chi tiết phiếu nhập kho
+    │       └── Supplier6.java               ← Nhà cung cấp hàng hóa
     └── webapp/
-        ├── WEB-INF/web.xml              ← Deployment descriptor
-        ├── css/style.css                ← Global CSS (dark theme)
-        ├── js/
-        │   ├── main.js                  ← Script chung
-        │   ├── dangky.js               ← Validate Module 1
-        │   └── thongke.js              ← Logic Module 2
-        ├── index.jsp                    ← Trang chủ
-        ├── dangky.jsp                   ← Form đăng ký (View Module 1)
-        ├── dangky_success.jsp           ← Thông báo thành công
-        ├── thongke.jsp                  ← Bảng thống kê (View Module 2)
-        ├── error404.jsp
-        └── error500.jsp
+        ├── WEB-INF/
+        │   ├── web.xml                      ← Cấu hình Web Application (Session timeout, Error pages)
+        │   └── lib/                         ← Driver JDBC (mysql-connector-j-8.0.33.jar)
+        ├── css/
+        │   └── style.css                    ← Bộ CSS giao diện hiện đại (16 mục quản lý tập trung)
+        ├── images/                          ← Hình ảnh biểu ngữ và tư liệu hệ thống
+        ├── HomePage.jsp                     ← Giao diện Trang chủ người dùng
+        ├── index.jsp                        ← Chuyển tiếp tự động đến HomePage.jsp
+        ├── register.jsp                     ← Giao diện Đăng ký Thành viên (Module 1)
+        ├── login.jsp                        ← Giao diện Đăng nhập hệ thống (Xác thực phân quyền)
+        ├── logout.jsp                       ← Xử lý đăng xuất phiên làm việc (Session)
+        ├── manager_home.jsp                 ← Dashboard Quản lý siêu thị
+        ├── statis_type.jsp                  ← Giao diện chọn loại báo cáo (Module 2)
+        ├── date_range.jsp                   ← Giao diện chọn khoảng thời gian thống kê
+        ├── product_revenue_list.jsp         ← Giao diện Bảng thống kê doanh thu mặt hàng
+        ├── transaction_detail.jsp           ← Giao diện Xem lịch sử giao dịch từng mặt hàng
+        ├── error404.jsp                     ← Trang xử lý lỗi 404 (Không tìm thấy trang)
+        └── error500.jsp                     ← Trang xử lý lỗi 500 (Lỗi ngoại lệ hệ thống)
 ```
 
 ---
 
-## ⚙️ Yêu cầu Hệ thống
+## 🗄️ Mô Hình Cơ Sở Dữ Liệu Quan Hệ (`qlst_db`)
 
-- **JDK:** 11 trở lên
-- **Maven:** 3.6+
-- **Apache Tomcat:** 10.x (hỗ trợ Jakarta EE 9+)
-- **MySQL:** 8.0+
+Dữ liệu được tổ chức theo chuẩn Phân tích Thiết kế Hệ thống với hậu tố `6` (theo quy ước mã đề tài):
+
+1. **Nhóm Tài khoản & Người dùng:**
+   * `tblMember6`: Bảng cơ sở chứa thông tin chung (họ tên, email, mật khẩu, SĐT, ngày sinh, địa chỉ).
+   * `tblCustomer6`: Kế thừa thành viên khách hàng (ngày đăng ký, tích điểm...).
+   * `tblEmployee6`: Kế thừa nhân viên siêu thị (vị trí công việc, tiền lương).
+   * `tblManager6`: Kế thừa nhân viên cấp quản lý.
+2. **Nhóm Hàng hóa:**
+   * `tblProduct6`: Thông tin sản phẩm, loại hàng, đơn vị tính, đơn giá bán, giá nhập, số lượng tồn kho.
+3. **Nhóm Bán hàng (Nguồn dữ liệu thống kê Module 2):**
+   * **Bán lẻ tại quầy:** `InStoreSalesInvoice6` (Hóa đơn) liên kết `tblInStoreSalesInvoiceDetail6` (Chi tiết).
+   * **Bán trực tuyến:** `tblOnlineOrder6` (Đơn đặt hàng) ➔ `tblOnlineOrderDetail6` (Chi tiết đơn) ➔ `tblOnlineInvoice6` (Hóa đơn giao dịch).
 
 ---
 
-## 🚀 Hướng dẫn Cài đặt
+## 🚀 Hướng Dẫn Cài Đặt & Chạy Ứng Dụng
 
-### Bước 1 – Tạo CSDL MySQL
+### 1. Chuẩn bị Môi trường
+* **JDK:** Java 11 hoặc mới hơn (Khuyến nghị: JDK 17, JDK 21 hoặc JDK 24).
+* **MySQL:** MySQL Server 8.0 (chạy qua Docker hoặc cài trực tiếp trên máy qua Port `3306`).
+* **Máy chủ:** Apache Tomcat 9 (đã được tích hợp sẵn trong dự án).
 
-```sql
--- Mở MySQL Workbench hoặc chạy lệnh (chú ý cờ --default-character-set=utf8mb4 để không bị lỗi tiếng Việt):
-mysql -u root -p --default-character-set=utf8mb4 < sql/qlst_database.sql
-```
-
-Hoặc mở file `sql/qlst_database.sql` và nhấn Run (Execute) trực tiếp trong MySQL Workbench.
-
-### Bước 2 – Cấu hình kết nối DB
-
-Mở file [`src/main/java/com/qlst/dao/DBConnection.java`](src/main/java/com/qlst/dao/DBConnection.java) và chỉnh:
-
-```java
-private static final String URL      = "jdbc:mysql://localhost:3306/qlst_db...";
-private static final String USERNAME = "root";       // ← thay bằng username MySQL của bạn
-private static final String PASSWORD = "root";       // ← thay bằng password MySQL của bạn
-```
-
-### Bước 3 – Build bằng Maven
-
+### 2. Thiết lập Cơ sở dữ liệu
+Chạy kịch bản SQL tạo bảng và nạp dữ liệu mẫu vào MySQL:
 ```bash
-cd QLST
-mvn clean package
+mysql -u root -p --default-character-set=utf8mb4 qlst_db < sql/final_dien_may_full.sql
 ```
 
-File WAR sẽ được tạo tại: `target/QLSieuThi.war`
+### 3. Cấu hình Kết nối CSDL
+Mở file `src/main/java/com/qlst/dao/DBConnection.java` để điều chỉnh tài khoản MySQL nếu cần:
+```java
+private static final String URL      = "jdbc:mysql://localhost:3306/qlst_db?useSSL=false&serverTimezone=Asia/Ho_Chi_Minh&characterEncoding=UTF-8";
+private static final String USERNAME = "root";
+private static final String PASSWORD = "root";
+```
 
-### Bước 4 – Deploy lên Tomcat
+### 4. Khởi chạy Ứng dụng (Cách nhanh nhất)
 
-1. Copy `target/QLSieuThi.war` vào thư mục `webapps/` của Tomcat
-2. Khởi động Tomcat: `bin/startup.bat` (Windows)
-3. Truy cập: `http://localhost:8080/QLSieuThi/`
+* **Cách 1 – Bằng tập lệnh 1-Click (Khuyến nghị trên Windows):**
+  Nhấp đúp chuột vào file:
+  ```
+  KHOI_DONG_TOMCAT.bat
+  ```
+* **Cách 2 – Chạy trực tiếp qua Java:**
+  Chạy hàm `main()` trong file `src/main/java/com/qlst/TomcatLauncher.java`.
+
+Ứng dụng sẽ tự động khởi động và mở trình duyệt tại địa chỉ:
+👉 **`http://localhost:8080/QLSieuThi/`**
 
 ---
 
-## 🗃️ Sơ đồ CSDL
+## 🔑 Tài Khoản Trải Nghiệm Mẫu
 
-```
-ThanhVien (Module 1)
-  id | hoTen | email | matKhau | soDienThoai | diaChi | ngaySinh | gioiTinh | ngayDangKy | trangThai
-
-DanhMuc
-  id | tenDM | moTa
-
-SanPham
-  id | maSP | tenSP | idDanhMuc(FK) | donGia | soLuongTon | donVi | moTa | anhSP | trangThai
-
-HoaDon
-  id | maHD | idThanhVien(FK) | ngayLap | tongTien | trangThai | ghiChu
-
-ChiTietHoaDon (Module 2 – nguồn dữ liệu thống kê)
-  id | idHoaDon(FK) | idSanPham(FK) | soLuong | donGia | thanhTien
-```
-
----
-
-## 🔗 URL Mapping
-
-| URL | Method | Chức năng |
-|-----|--------|-----------|
-| `/` hoặc `/index.jsp` | GET | Trang chủ |
-| `/dangky` | GET | Hiển thị form đăng ký |
-| `/dangky` | POST | Xử lý đăng ký thành viên |
-| `/thongke` | GET | Thống kê tất cả mặt hàng |
-| `/thongke?loai=thoigian&tuNgay=...&denNgay=...` | GET | Lọc theo thời gian |
-| `/thongke?loai=danhmuc&idDM=2` | GET | Lọc theo danh mục |
-
----
-
-## 📐 Kiến trúc MVC (theo LAB1)
-
-```
-Browser
-   │
-   ▼  HTTP Request
-[Servlet] ← Controller (DangKyServlet / ThongKeServlet)
-   │
-   ├── [DAO] ← Model (ThanhVienDAO / ThongKeDAO)
-   │     │
-   │     └── [MySQL CSDL] via JDBC
-   │
-   └── [JSP] ← View (dangky.jsp / thongke.jsp)
-         │
-         ▼  HTTP Response
-      Browser
-```
-
----
-
-## 🎨 Tính năng Giao diện
-
-### Module 1 – Đăng ký Thành viên
-- ✅ Form đầy đủ: họ tên, email, mật khẩu, SĐT, ngày sinh, địa chỉ, giới tính
-- ✅ Validate **phía client** (JavaScript) theo thời gian thực
-- ✅ Validate **phía server** (Servlet) – kiểm tra email trùng, độ dài mật khẩu
-- ✅ Hiển thị thông báo lỗi chi tiết bên cạnh từng trường
-- ✅ Chỉ thị độ mạnh mật khẩu
-- ✅ Toggle hiện/ẩn mật khẩu
-- ✅ Trang thành công với animated checkmark
-
-### Module 2 – Thống kê Doanh thu
-- ✅ Bảng thống kê đầy đủ: mã SP, tên, danh mục, đơn giá, SL bán, doanh thu, %
-- ✅ **Bộ lọc 3 chế độ**: Tất cả / Theo thời gian / Theo danh mục
-- ✅ **Biểu đồ cột Chart.js** Top 10 mặt hàng doanh thu cao nhất
-- ✅ **4 KPI cards**: số mặt hàng, doanh thu lọc, tổng DT hệ thống, tỉ lệ
-- ✅ Thanh progress bar % doanh thu từng mặt hàng
-- ✅ Sort bảng khi click vào header cột
-- ✅ Xếp hạng 🥇🥈🥉 Top 3 mặt hàng
-
----
-
-> Dự án tuân theo mẫu thiết kế **DAO Pattern + MVC** theo hướng dẫn LAB1-JavaProgrammingBasic.
+| Phân quyền | Tên đăng nhập (`username`) | Mật khẩu | Chức năng truy cập |
+| :--- | :--- | :--- | :--- |
+| **Quản lý (Manager)** | `manager` | `123456` | Toàn quyền truy cập phân hệ **Báo cáo & Thống kê Doanh thu (Module 2)** |
+| **Khách hàng (Customer)** | `an.nguyen` | `123456` | Trải nghiệm luồng **Đăng ký Thành viên (Module 1)** |
