@@ -1,0 +1,1125 @@
+/* ==============================================================================
+   HỆ THỐNG QUẢN LÝ SIÊU THỊ (QLST) - HỌC VIỆN CÔNG NGHỆ BƯU CHÍNH VIỄN THÔNG (PTIT)
+   Tập tin định kiểu giao diện trung tâm: style.css
+   Giao diện: Thiết kế hiện đại, nền sáng (Clean Light Theme), chuẩn đồ án học phần
+   Sinh viên thực hiện: MSSV 10B23DCCN646
+   ============================================================================== */
+
+/* ------------------------------------------------------------------------------
+   MỤC LỤC CÁC PHẦN TRONG TẬP TIN CSS (Bấm Ctrl+F để tìm nhanh số mục):
+   1. BẢNG MÀU CHỦ ĐẠO & BIẾN TOÀN CỤC (:root) --> [Nơi đổi màu toàn bộ hệ thống]
+   2. THIẾT LẬP CƠ BẢN VÀ RESET CSS (*, body, a) --> [Font chữ, căn lề toàn trang]
+   3. THANH ĐIỀU HƯỚNG TRÊN CÙNG (.main-header, .logo, .nav-link)
+   4. BỐ CỤC KHUNG CHỨA VÀ TIÊU ĐỀ TRANG (.container, main, .page-header, .page-title)
+   5. KHỐI THẺ CHỨA NỘI DUNG (.card, .card-title)
+   6. BIỂU MẪU LỌC DỮ LIỆU & Ô NHẬP LIỆU (.filter-form, .form-group, .form-control)
+   7. HỆ THỐNG CÁC NÚT BẤM & HIỆU ỨNG RÊ CHUỘT (.btn, .btn-primary, .btn-outline, hover)
+   8. THỐNG KÊ TỔNG QUAN / CARD TÓM TẮT (.stats-summary, .stat-item)
+   9. BẢNG DỮ LIỆU BÁO CÁO & HIỆU ỨNG DÒNG (.data-table, th, td, tr:hover)
+   10. HUY HIỆU VÀ HỘP THÔNG BÁO LỖI/THÀNH CÔNG (.badge, .alert, .alert-danger, .alert-success)
+   11. GIAO DIỆN FORM ĐĂNG KÝ THÀNH VIÊN (.auth-main, .auth-card, .toggle-pw)
+   12. PHẦN BANNER GIỚI THIỆU TRANG CHỦ (.hero, .hero-title, .gradient-text)
+   13. CÁC THẺ CHỨC NĂNG TRANG CHỦ (.section, .cards-grid, .module-card)
+   14. BỘ SƯU TẬP HÌNH ẢNH TRANG CHỦ (.gallery-section, .gallery-card, .gallery-img)
+   15. CHẾ ĐỘ HIỂN THỊ GỌN 1 MÀN HÌNH CHO TRANG CHỦ (body.home-compact)
+   16. CHÂN TRANG (.main-footer)
+   ============================================================================== */
+
+/* Nhúng font chữ hiện đại Inter từ Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+
+/* ==============================================================================
+   1. BẢNG MÀU CHỦ ĐẠO & BIẾN TOÀN CỤC (:root)
+   👉 MẸO CHO BẢO VỆ: Nếu thầy cô bảo "Đổi sang tông màu Đỏ / Xanh lá / Cam", 
+      chỉ cần đổi mã màu hex ở mục này là TOÀN BỘ website tự động đổi theo!
+   ============================================================================== */
+:root {
+    /* Màu nền của toàn bộ website và các khối card */
+    --bg-page: #ffffff;
+    /* Nền trang: Màu trắng tinh */
+    --bg-card: #ffffff;
+    /* Nền các khung thẻ card: Màu trắng */
+
+    /* Màu viền khung (Border) */
+    --border-color: #e2e8f0;
+    /* Đường kẻ viền xám nhạt tinh tế */
+    --border-focus: #2563eb;
+    /* Màu viền khi người dùng click chuột vào ô nhập liệu */
+
+    /* Bảng màu thương hiệu và trạng thái */
+    --primary: #2563eb;
+    /* MÀU CHỦ ĐẠO (Primary Blue): Màu nút, thanh active, icon */
+    --primary-hover: #1d4ed8;
+    /* Màu chủ đạo khi rê chuột (đậm hơn một tông) */
+    --success: #16a34a;
+    /* Màu xanh lá: Trạng thái thành công, có hàng, tăng trưởng */
+    --warning: #d97706;
+    /* Màu vàng cam: Cảnh báo, sắp hết hàng */
+    --danger: red;
+    /* Màu đỏ: Báo lỗi, xóa dữ liệu, cảnh báo nguy hiểm */
+
+    /* Màu chữ hiển thị (Typography) */
+    --text-main: black;
+    /* Màu chữ chính: Đen than đậm, rõ nét, dễ đọc */
+    --text-sub: #475569;
+    /* Màu chữ phụ / nhãn mô tả: Xám đậm vừa phải */
+    --text-muted: #64748b;
+    /* Màu chữ mờ / ngày giờ / ghi chú nhỏ */
+
+    /* Đổ bóng (Box Shadow) và độ bo góc (Border Radius) */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+    /* Đổ bóng nhẹ cho card, bảng */
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07);
+    /* Đổ bóng nổi khi rê chuột */
+    --radius: 8px;
+    /* Độ bo cong góc chuẩn mực (8 pixel) */
+}
+
+
+/* ==============================================================================
+   2. THIẾT LẬP CƠ BẢN VÀ RESET CSS (*, body, a)
+   Dùng để đồng nhất hiển thị trên mọi trình duyệt (Chrome, Cốc Cốc, Edge, Firefox)
+   ============================================================================== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    /* Tính kích thước bao gồm cả viền và khoảng đệm (padding) */
+    margin: 0;
+    /* Xóa lề mặc định của trình duyệt */
+    padding: 0;
+    /* Xóa khoảng đệm mặc định */
+}
+
+body {
+    /* Ưu tiên font Inter chuẩn quốc tế, fallback về font hệ thống nếu mất mạng */
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg-page);
+    color: var(--text-main);
+    line-height: 1.5;
+    /* Giãn dòng chuẩn 1.5 giúp mắt đọc báo cáo không bị mỏi */
+    min-height: 100vh;
+    /* Chiều cao tối thiểu 100% màn hình */
+    display: flex;
+    /* Dùng Flexbox để đẩy Footer luôn nằm dưới đáy trang */
+    flex-direction: column;
+}
+
+/* Kiểu dáng đường link */
+a {
+    color: var(--primary);
+    text-decoration: none;
+    /* Bỏ gạch chân mặc định */
+}
+
+a:hover {
+    text-decoration: underline;
+    /* Hiện gạch chân khi rê chuột */
+}
+
+/* Khung chứa nội dung trung tâm (Căn giữa trang) */
+.container {
+    max-width: 1200px;
+    /* Chiều rộng tối đa 1200px chuẩn màn hình Desktop */
+    margin: 0 auto;
+    /* Căn giữa 2 bên lề màn hình */
+    padding: 0 24px;
+    /* Đệm thụt vào 24px tránh dính sát mép màn hình */
+    width: 100%;
+}
+
+
+/* ==============================================================================
+   3. THANH ĐIỀU HƯỚNG TRÊN CÙNG (HEADER / NAVBAR)
+   Dùng cho menu định hướng xuyên suốt mọi trang web
+   ============================================================================== */
+.main-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--border-color);
+    /* Kẻ viền xám ngăn cách phía dưới */
+    position: sticky;
+    /* Cố định header dính trên cùng khi cuộn trang */
+    top: 0;
+    z-index: 100;
+    /* Đảm bảo luôn nổi lên trên các thành phần khác */
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* Đẩy Logo sang trái, Menu sang phải */
+    height: 64px;
+    /* Chiều cao thanh menu chuẩn 64px */
+}
+
+/* Logo thương hiệu góc trên bên trái */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* Khoảng cách giữa icon và chữ */
+    font-size: 1.25rem;
+    font-weight: 700;
+    /* Chữ in đậm */
+    color: #1e3a8a;
+    /* Màu xanh dương đậm thương hiệu PTIT */
+}
+
+.logo i {
+    color: var(--primary);
+    /* Icon cửa hàng có màu xanh chính */
+}
+
+.logo small {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: #eff6ff;
+    /* Nền pill nhỏ màu xanh nhạt phía sau chữ */
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+/* Danh sách liên kết điều hướng trên Header */
+nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    /* Khoảng cách giữa các nút link menu */
+}
+
+.nav-link {
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: var(--text-sub);
+    /* Màu chữ phụ khi chưa click */
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.15s ease;
+    /* Hiệu ứng đổi màu mượt mà 0.15 giây */
+}
+
+.nav-link:hover {
+    background-color: #f1f5f9;
+    /* Đổi màu nền xám nhẹ khi rê chuột vào */
+    color: var(--text-main);
+    text-decoration: none;
+}
+
+.nav-link.active {
+    background-color: #eff6ff;
+    /* Tô màu nền xanh nhạt cho trang đang đứng */
+    color: var(--primary);
+    /* Chữ đổi sang màu xanh thương hiệu */
+    font-weight: 600;
+}
+
+
+/* ==============================================================================
+   4. BỐ CỤC KHUNG CHỨA VÀ TIÊU ĐỀ TRANG
+   Dùng cho phần nội dung chính giữa trang (main, page-header, page-title, breadcrumb)
+   ============================================================================== */
+main {
+    flex: 1;
+    /* Chiếm toàn bộ khoảng trống còn lại giữa Header và Footer */
+    padding: 32px 0 60px;
+    /* Khoảng cách đệm trên 32px, dưới 60px */
+}
+
+/* Phần tiêu đề đầu trang */
+.page-header {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+    /* Kẻ phân cách nhẹ bên dưới */
+}
+
+.page-title {
+    font-size: 1.75rem;
+    /* Kích thước chữ tiêu đề lớn */
+    font-weight: 700;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* Khoảng cách giữa icon và tiêu đề chữ */
+}
+
+.page-desc {
+    color: var(--text-sub);
+    /* Dòng chú thích / mô tả ngắn dưới tiêu đề */
+    margin-top: 4px;
+    font-size: 0.95rem;
+}
+
+/* Đường dẫn điều hướng phân cấp (Breadcrumb - ví dụ: Trang chủ > Doanh thu sản phẩm) */
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+
+.breadcrumb span {
+    color: var(--text-sub);
+    font-weight: 500;
+}
+
+
+/* ==============================================================================
+   5. KHỐI THẺ CHỨA NỘI DUNG (CARD)
+   Dùng làm khung bao quanh các bảng dữ liệu, form tìm kiếm, thống kê
+   ============================================================================== */
+.card {
+    background: var(--bg-card);
+    /* Nền màu trắng tinh */
+    border: 1px solid var(--border-color);
+    /* Viền xám bao quanh */
+    border-radius: var(--radius);
+    /* Bo cong góc 8px */
+    padding: 24px;
+    /* Đệm trong 24px */
+    box-shadow: var(--shadow-sm);
+    /* Đổ bóng nhẹ tạo chiều sâu nổi lên mặt bàn */
+    margin-bottom: 24px;
+}
+
+.card-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+
+/* ==============================================================================
+   6. BIỂU MẪU LỌC DỮ LIỆU & Ô NHẬP LIỆU (FILTER FORM & INPUT CONTROLS)
+   Dùng cho: Khung chọn ngày Từ ngày - Đến ngày (DateRangeUI6), ô tìm kiếm, nhập liệu
+   ============================================================================== */
+.filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    /* Tự động xuống dòng trên màn hình điện thoại */
+    align-items: flex-end;
+    /* Căn đều chân nút bấm thẳng hàng với ô input */
+    gap: 16px;
+    /* Khoảng cách giữa các ô nhập liệu */
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    /* Khoảng cách giữa nhãn chữ Label và ô nhập liệu Input */
+}
+
+.form-group label {
+    font-size: 0.88rem;
+    font-weight: 600;
+    /* In đậm nhãn chữ ô nhập */
+    color: var(--text-sub);
+}
+
+/* Ô nhập liệu (Input text, date, password, select) */
+.form-control {
+    height: 40px;
+    /* Chiều cao chuẩn 40px dễ click */
+    padding: 0 12px;
+    /* Khoảng đệm chữ bên trong */
+    border: 1px solid var(--border-color);
+    /* Viền xám mờ */
+    border-radius: 6px;
+    /* Bo cong góc 6px */
+    background-color: #ffffff;
+    font-size: 0.95rem;
+    color: var(--text-main);
+    outline: none;
+    /* Bỏ viền đen thô kệch mặc định của trình duyệt */
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* 👉 Hiệu ứng khi bấm con trỏ chuột vào ô nhập (Focus Ring) */
+.form-control:focus {
+    border-color: var(--border-focus);
+    /* Đổi viền sang màu xanh */
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    /* Phát hào quang màu xanh nhạt quanh ô */
+}
+
+
+/* ==============================================================================
+   7. HỆ THỐNG CÁC NÚT BẤM VÀ HIỆU ỨNG RÊ CHUỘT (BUTTONS & HOVER EFFECTS)
+   Dùng cho: Nút "Xem thống kê", "Xem chi tiết", "Đăng ký", "Quay lại"
+   ============================================================================== */
+/* Kiểu dáng nền tảng chung cho tất cả các nút */
+.btn {
+    height: 40px;
+    padding: 0 18px;
+    border-radius: 6px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    border: 1px solid transparent;
+    cursor: pointer;
+    /* Hiển thị con trỏ hình bàn tay khi rê chuột */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    /* Khoảng cách giữa icon và chữ trên nút */
+    transition: all 0.15s ease;
+    /* Hiệu ứng chuyển động mượt */
+    text-decoration: none;
+}
+
+.btn:hover {
+    text-decoration: none;
+}
+
+/* Nút chính (Primary Button): Nền xanh dương, chữ trắng */
+.btn-primary {
+    background-color: var(--primary);
+    color: #ffffff;
+}
+
+/* 👉 Hiệu ứng khi rê chuột vào nút chính: Màu xanh đậm hơn */
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    color: #ffffff;
+}
+
+/* Nút dạng viền (Outline Button): Nền trắng, viền xám, chữ xám */
+.btn-outline {
+    background-color: #ffffff;
+    border-color: var(--border-color);
+    color: var(--text-sub);
+}
+
+/* 👉 Hiệu ứng khi rê chuột vào nút viền: Đổi sang nền xám nhạt */
+.btn-outline:hover {
+    background-color: #f1f5f9;
+    color: var(--text-main);
+}
+
+/* Nút kích thước nhỏ (Small Button) */
+.btn-sm {
+    height: 32px;
+    padding: 0 12px;
+    font-size: 0.85rem;
+}
+
+
+/* ==============================================================================
+   8. THỐNG KÊ TỔNG QUAN / CARD TÓM TẮT (SUMMARY STATS)
+   Dùng cho: Các ô hiển thị "Tổng doanh thu", "Số sản phẩm bán ra", "Số giao dịch"
+   ============================================================================== */
+.stats-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    /* Tự chia cột đều nhau */
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.stat-item {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    box-shadow: var(--shadow-sm);
+}
+
+.stat-item .stat-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    /* Chữ nhãn nhỏ màu xám */
+    font-weight: 500;
+}
+
+.stat-item .stat-val {
+    font-size: 1.5rem;
+    /* Số tiền / số lượng in to rõ ràng */
+    font-weight: 700;
+    color: var(--text-main);
+    margin-top: 4px;
+}
+
+/* Thẻ thống kê nổi bật (Highlight) */
+.stat-item.highlight .stat-val {
+    color: #1e3a8a;
+    /* Màu xanh đậm đặc biệt cho con số quan trọng */
+}
+
+
+/* ==============================================================================
+   9. BẢNG DỮ LIỆU BÁO CÁO & HIỆU ỨNG DÒNG (DATA TABLES)
+   Dùng cho: ProductRevenueListUI6 (Danh sách mặt hàng theo doanh thu)
+             TransactionDetailUI6 (Danh sách giao dịch chi tiết của sản phẩm)
+   ============================================================================== */
+/* Vỏ bọc bảng hỗ trợ cuộn ngang trên màn hình điện thoại nhỏ */
+.table-responsive {
+    overflow-x: auto;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    background: #ffffff;
+}
+
+/* Định kiểu cho bảng dữ liệu */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    /* Gộp liền mạch các đường kẻ ô bảng */
+    font-size: 0.92rem;
+    text-align: left;
+}
+
+/* Dòng tiêu đề cột của bảng (Table Header <th>) */
+.data-table th {
+    background-color: #f8fafc;
+    /* Màu nền xám xanh nhạt sang trọng */
+    color: var(--text-sub);
+    /* Màu chữ tiêu đề cột */
+    font-weight: 600;
+    padding: 12px 16px;
+    /* Độ giãn cách trong ô */
+    border-bottom: 1px solid var(--border-color);
+    white-space: nowrap;
+    /* Không cho chữ bị gãy dòng đột ngột */
+}
+
+/* Các ô dữ liệu thông thường (Table Data <td>) */
+.data-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    /* Đường kẻ ngang siêu nhạt ngăn cách các dòng */
+    color: var(--text-main);
+}
+
+/* 👉 HIỆU ỨNG RÊ CHUỘT LÊN DÒNG BẢNG (TABLE ROW HOVER):
+   Khi di chuyển chuột qua từng dòng sản phẩm, dòng đó sẽ sáng nền xám nhẹ để dễ theo dõi */
+.data-table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+/* Bỏ đường gạch chân cho dòng cuối cùng của bảng */
+.data-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Dòng chân bảng tính tổng cộng (Table Footer <tfoot>) */
+.data-table tfoot td {
+    font-weight: 700;
+    background-color: #f8fafc;
+    border-top: 2px solid var(--border-color);
+}
+
+/* Các lớp tiện ích căn chỉnh lề chữ */
+.text-center {
+    text-align: center;
+}
+
+/* Căn giữa */
+.text-right {
+    text-align: right;
+}
+
+/* Căn phải (áp dụng cho cột Số tiền, Số lượng) */
+
+
+/* ==============================================================================
+   10. HUY HIỆU VÀ HỘP THÔNG BÁO LỖI/THÀNH CÔNG (BADGES & ALERTS)
+   ============================================================================== */
+/* Huy hiệu nhỏ (Pill badge) */
+.badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    background: #f1f5f9;
+    color: var(--text-sub);
+}
+
+.badge-blue {
+    background: #eff6ff;
+    /* Nền xanh nhạt */
+    color: #1d4ed8;
+    /* Chữ xanh đậm */
+}
+
+.badge-green {
+    background: #f0fdf4;
+    /* Nền xanh lá nhạt */
+    color: #15803d;
+    /* Chữ xanh lá đậm (Đã thanh toán) */
+}
+
+/* Khung hộp thông báo (Alert Box) */
+.alert {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    border-radius: var(--radius);
+    font-size: 0.92rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+/* Thông báo LỖI (Ví dụ: Ngày không hợp lệ, đăng ký thất bại) */
+.alert-danger {
+    background-color: #fef2f2;
+    /* Nền đỏ hồng nhạt */
+    border: 1px solid #fecaca;
+    /* Viền đỏ nhạt */
+    color: #991b1b;
+    /* Chữ đỏ thẫm */
+}
+
+/* Thông báo THÀNH CÔNG (Ví dụ: Đăng ký thành viên thành công) */
+.alert-success {
+    background-color: #f0fdf4;
+    /* Nền xanh lá nhạt */
+    border: 1px solid #bbf7d0;
+    /* Viền xanh lá */
+    color: #166534;
+    /* Chữ xanh lục đậm */
+}
+
+/* Thông báo THÔNG TIN HƯỚNG DẪN */
+.alert-info {
+    background-color: #eff6ff;
+    /* Nền xanh lam nhạt */
+    border: 1px solid #bfdbfe;
+    /* Viền xanh lam */
+    color: #1e40af;
+    /* Chữ xanh lam đậm */
+}
+
+
+/* ==============================================================================
+   11. GIAO DIỆN BIỂU MẪU ĐĂNG KÝ KHÁCH HÀNG THÀNH VIÊN (CUSTOMER REGISTRATION)
+   Dùng riêng cho trang RegisterCustomerUI (auth-main, auth-card, form-row)
+   ============================================================================== */
+.auth-main {
+    display: flex;
+    justify-content: center;
+    /* Căn giữa khung đăng ký theo chiều ngang */
+    padding: 30px 20px 60px;
+}
+
+.auth-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    /* Bo cong tròn trịa hơn cho form xác thực */
+    width: 100%;
+    max-width: 620px;
+    /* Chiều rộng vừa vặn 620px */
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    /* Đổ bóng sâu tạo cảm giác nổi */
+    overflow: hidden;
+}
+
+/* Đầu thẻ đăng ký (Icon người dùng + Tiêu đề Form) */
+.auth-card-header {
+    background: #f8fafc;
+    border-bottom: 1px solid var(--border-color);
+    padding: 24px 30px;
+    text-align: center;
+}
+
+.auth-card-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-top: 8px;
+}
+
+.auth-card-header p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 4px;
+}
+
+/* Icon hình tròn ở đầu form */
+.auth-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #eff6ff;
+    color: var(--primary);
+    font-size: 1.25rem;
+}
+
+/* Thân form chứa các hàng ô nhập liệu */
+.auth-form {
+    padding: 28px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Hàng chia đôi 2 cột (Ví dụ: Họ đệm bên trái, Tên bên phải) */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+/* Trên màn hình điện thoại thì tự thu về 1 cột dọc */
+@media (max-width: 640px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Ô nhập mật khẩu có nút con mắt ẩn/hiện mật khẩu */
+.input-icon-right {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon-right .form-control {
+    width: 100%;
+    padding-right: 40px;
+    /* Chừa khoảng trống bên phải cho nút con mắt */
+}
+
+.toggle-pw {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 4px;
+}
+
+/* Dấu sao màu đỏ biểu thị trường bắt buộc nhập */
+.required {
+    color: var(--danger);
+}
+
+/* Dòng chữ báo lỗi ngay dưới chân ô nhập */
+.field-error {
+    font-size: 0.8rem;
+    color: var(--danger);
+    margin-top: 3px;
+    display: block;
+}
+
+/* Nút bấm trải rộng 100% chiều ngang */
+.btn-block {
+    width: 100%;
+}
+
+.btn-submit {
+    height: 44px;
+    font-size: 1rem;
+    margin-top: 8px;
+}
+
+.auth-footer-text {
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-top: 8px;
+}
+
+
+/* ==============================================================================
+   12. PHẦN BANNER GIỚI THIỆU TRANG CHỦ (HERO SECTION)
+   Dùng cho: Phần tiêu đề lớn chào mừng tại trang index.jsp
+   ============================================================================== */
+.hero {
+    background: #ffffff;
+    border-bottom: 1px solid var(--border-color);
+    padding: 50px 0 60px;
+    text-align: center;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #eff6ff;
+    color: var(--primary);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.hero-title {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.25;
+    margin-bottom: 16px;
+}
+
+.gradient-text {
+    color: var(--primary);
+    /* Chữ nhấn mạnh màu xanh chủ đạo */
+}
+
+.hero-sub {
+    font-size: 1.05rem;
+    color: var(--text-sub);
+    max-width: 700px;
+    margin: 0 auto 28px;
+}
+
+.hero-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+
+/* ==============================================================================
+   13. CÁC THẺ PHÂN HỆ CHỨC NĂNG TRANG CHỦ (MODULE CARDS)
+   Dùng cho: 2 thẻ chọn chức năng: "Đăng ký thành viên" & "Thống kê doanh thu"
+   ============================================================================== */
+.section {
+    padding: 48px 0;
+}
+
+.section-label {
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+}
+
+.section-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 28px;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+}
+
+.module-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* 👉 HIỆU ỨNG RÊ CHUỘT THẺ CHỨC NĂNG (CARD HOVER):
+   Thẻ sẽ hơi nhấc lên cao 2px và bóng đổ đậm hơn tạo cảm giác 3D sống động */
+.module-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.module-card .card-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: #eff6ff;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    margin-bottom: 16px;
+}
+
+.module-card h3 {
+    font-size: 0.88rem;
+    color: var(--primary);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.module-card h4 {
+    font-size: 1.25rem;
+    color: var(--text-main);
+    font-weight: 700;
+    margin: 4px 0 16px;
+}
+
+.feature-list {
+    list-style: none;
+    margin-bottom: 24px;
+    flex: 1;
+}
+
+.feature-list li {
+    font-size: 0.9rem;
+    color: var(--text-sub);
+    padding: 6px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.feature-list li i {
+    color: var(--success);
+    font-size: 0.85rem;
+}
+
+
+/* ==============================================================================
+   14. BỘ SƯU TẬP HÌNH ẢNH TRANG CHỦ (GALLERY CARDS)
+   Dùng cho: 3 thẻ ảnh giới thiệu hệ thống siêu thị công nghệ tại trang index.jsp
+   ============================================================================== */
+.gallery-section {
+    padding: 36px 0 56px;
+    background-color: #ffffff;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 28px;
+}
+
+.gallery-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 👉 HIỆU ỨNG RÊ CHUỘT CARD ẢNH: Nhấc card lên 4px và đổ bóng mịn */
+.gallery-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px -3px rgba(0, 0, 0, 0.08);
+}
+
+.gallery-img-wrapper {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    background-color: #f1f5f9;
+}
+
+.gallery-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Giữ nguyên tỉ lệ ảnh không bị méo */
+    display: block;
+    transition: transform 0.35s ease;
+}
+
+/* 👉 HIỆU ỨNG PHÓNG TO ẢNH (ZOOM HOVER): Khi rê chuột vào card, ảnh phóng to nhẹ 4% */
+.gallery-card:hover .gallery-img {
+    transform: scale(1.04);
+}
+
+.gallery-card-body {
+    padding: 20px 22px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.gallery-card-title {
+    font-size: 1.12rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 8px;
+}
+
+.gallery-card-text {
+    font-size: 0.92rem;
+    color: var(--text-sub);
+    line-height: 1.55;
+    margin: 0;
+}
+
+
+/* ==============================================================================
+   15. CHẾ ĐỘ HIỂN THỊ GỌN TRỌN VẸN 1 MÀN HÌNH (COMPACT SINGLE-SCREEN HOME)
+   Dùng cho: Khi mở trang chủ trên máy chiếu bảo vệ, toàn bộ trang vừa khít 1 màn hình,
+   không cần cuộn chuột, tạo cảm giác như phần mềm Desktop Dashboard chuyên nghiệp
+   ============================================================================== */
+body.home-compact {
+    height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+    /* Khóa thanh cuộn màn hình */
+    display: flex;
+    flex-direction: column;
+}
+
+body.home-compact .main-header {
+    flex-shrink: 0;
+}
+
+body.home-compact .header-inner {
+    height: 52px;
+    /* Thu gọn header từ 64px xuống 52px */
+}
+
+body.home-compact .hero {
+    padding: 16px 0 14px;
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+body.home-compact .hero-title {
+    font-size: 1.55rem;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 6px;
+}
+
+body.home-compact .hero-sub {
+    font-size: 0.88rem;
+    color: var(--text-sub);
+    max-width: 680px;
+    margin: 0 auto 12px;
+}
+
+body.home-compact .hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+body.home-compact .hero-actions .btn {
+    padding: 6px 16px;
+    font-size: 0.88rem;
+}
+
+body.home-compact .gallery-section {
+    padding: 12px 0;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+}
+
+body.home-compact .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* Chia đều 3 cột ảnh */
+    gap: 16px;
+    width: 100%;
+}
+
+body.home-compact .gallery-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Hiệu ứng rê chuột nhẹ trên bản compact */
+body.home-compact .gallery-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+body.home-compact .gallery-img-wrapper {
+    position: relative;
+    width: 100%;
+    height: 130px;
+    /* Chiều cao ảnh 130px vừa vặn tầm mắt */
+    overflow: hidden;
+    background-color: #f1f5f9;
+}
+
+body.home-compact .gallery-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s ease;
+}
+
+body.home-compact .gallery-card:hover .gallery-img {
+    transform: scale(1.04);
+}
+
+body.home-compact .gallery-card-body {
+    padding: 10px 14px 12px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+body.home-compact .gallery-card-title {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 3px;
+}
+
+body.home-compact .gallery-card-text {
+    font-size: 0.78rem;
+    color: var(--text-sub);
+    line-height: 1.4;
+    margin: 0;
+}
+
+
+/* ==============================================================================
+   16. CHÂN TRANG (FOOTER)
+   Dùng cho: Dòng bản quyền và thông tin tác giả ở cuối trang
+   ============================================================================== */
+.main-footer {
+    background-color: #ffffff;
+    border-top: 1px solid var(--border-color);
+    /* Đường kẻ viền xám ở phía trên footer */
+    padding: 20px 0;
+    color: var(--text-muted);
+    /* Chữ màu xám mờ */
+    font-size: 0.88rem;
+    text-align: center;
+    margin-top: auto;
+    /* Luôn dính sát đáy màn hình */
+}
+
+body.home-compact .main-footer {
+    padding: 8px 0;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+    border-top: 1px solid var(--border-color);
+    background-color: #ffffff;
+}
+
+/* ==============================================================================
+   HẾT TẬP TIN style.css
+   ============================================================================== */

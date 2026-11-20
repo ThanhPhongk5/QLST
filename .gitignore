@@ -1,0 +1,20 @@
+# Maven Build
+target/
+*.war
+
+# Tomcat cục bộ và log
+tomcat/
+*.log
+
+# Cấu hình IDE / Editor
+.vscode/
+.idea/
+*.iml
+.settings/
+.project
+.classpath
+
+# File script tạm thời
+auto-sync.ps1
+cau_truc_thu_muc.png
+Phu_Luc_Prompt_*.docx
