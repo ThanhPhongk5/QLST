@@ -7,9 +7,11 @@
             || (currentUser instanceof Employee6
                 && "Manager".equalsIgnoreCase(((Employee6) currentUser).getJobPosition()));
     if (!isManager) {
-        request.setAttribute("outMessage",
-            "Vui lòng đăng nhập bằng tài khoản Quản lý để truy cập phân hệ này.");
-        request.getRequestDispatcher("/login.jsp").forward(request, response);
+        if (currentUser == null) {
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+        } else {
+            response.sendRedirect(request.getContextPath() + "/HomePage.jsp");
+        }
         return;
     }
 %>

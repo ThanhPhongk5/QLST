@@ -19,11 +19,16 @@
         return;
     }
 
-    /* ── 2. Nếu đã đăng nhập rồi thì chuyển thẳng vào trang Quản lý ─ */
+    /* ── 2. Nếu đã đăng nhập rồi thì chuyển hướng theo vai trò ─ */
     HttpSession existingSession = request.getSession(false);
     if ("GET".equalsIgnoreCase(request.getMethod()) && existingSession != null
             && existingSession.getAttribute("currentUser") != null) {
-        response.sendRedirect(request.getContextPath() + "/manager_home.jsp");
+        Boolean isMgr = (Boolean) existingSession.getAttribute("isManager");
+        if (Boolean.TRUE.equals(isMgr)) {
+            response.sendRedirect(request.getContextPath() + "/manager_home.jsp");
+        } else {
+            response.sendRedirect(request.getContextPath() + "/HomePage.jsp");
+        }
         return;
     }
 
@@ -69,7 +74,11 @@
                         || (user instanceof Employee6
                             && "Manager".equalsIgnoreCase(((Employee6) user).getJobPosition()));
                 sess.setAttribute("isManager", isManager);
-                response.sendRedirect(request.getContextPath() + "/manager_home.jsp");
+                if (isManager) {
+                    response.sendRedirect(request.getContextPath() + "/manager_home.jsp");
+                } else {
+                    response.sendRedirect(request.getContextPath() + "/HomePage.jsp");
+                }
                 return;
             }
         }
